@@ -1,9 +1,13 @@
 package com.picpay.desafio.android
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.Gson
@@ -14,6 +18,8 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+
+private const val RC_NOTIFICATION = 99
 
 class MainActivity : AppCompatActivity(R.layout.activity_main) {
 
@@ -71,5 +77,19 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
                     adapter.users = response.body()!!
                 }
             })
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+            ) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(Manifest.permission.POST_NOTIFICATIONS),
+                    RC_NOTIFICATION
+                )
+            }
+        }
     }
 }
