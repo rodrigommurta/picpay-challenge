@@ -22,7 +22,7 @@ jobs :
         run: ./gradlew build
 
       - name: Upload a Build Artifact
-        uses: actions/upload-artifact@v3.1.3
+        uses: actions/upload-artifact@v4.4.3
         with:
           name: PicPayChallenge.apk
           path: app/build/outputs/apk/debug/app-debug.apk
