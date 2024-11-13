@@ -6,6 +6,8 @@ apply plugin: 'kotlin-kapt'
 
 apply plugin: 'kotlin-parcelize'
 
+apply plugin: 'org.jetbrains.kotlin.plugin.compose'
+
 android {
     namespace = "com.picpay.desafio.android"
     compileSdk 34
@@ -41,6 +43,7 @@ android {
     buildFeatures {
         dataBinding true
         viewBinding true
+        compose true
     }
     kapt {
         correctErrorTypes true
@@ -54,16 +57,15 @@ dependencies {
 
     implementation "androidx.core:core-ktx:$core_ktx_version"
 
-    implementation "androidx.appcompat:appcompat:$appcompat_version"
-    implementation "androidx.constraintlayout:constraintlayout:$constraintlayout_version"
-
-    implementation "com.google.android.material:material:$material_version"
-
-    implementation "io.insert-koin:koin-core:$koin_version"
-    implementation "io.insert-koin:koin-android:$koin_version"
-
-    implementation "com.google.dagger:dagger:$dagger_version"
-    kapt "com.google.dagger:dagger-compiler:$dagger_version"
+    implementation(project.dependencies.platform("io.insert-koin:koin-bom:$koin_version"))
+    implementation "io.insert-koin:koin-core"
+    implementation "io.insert-koin:koin-core-coroutines"
+    implementation "io.insert-koin:koin-android"
+    implementation "io.insert-koin:koin-androidx-compose"
+    implementation "io.insert-koin:koin-androidx-compose-navigation"
+    implementation "io.insert-koin:koin-androidx-workmanager"
+    implementation "io.insert-koin:koin-androidx-navigation"
+    implementation "io.insert-koin:koin-test"
 
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
@@ -81,19 +83,32 @@ dependencies {
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "com.squareup.retrofit2:converter-gson:$retrofit_version"
-    implementation "com.squareup.okhttp3:okhttp:$okhttp_version"
-    implementation "com.squareup.okhttp3:mockwebserver:$okhttp_version"
 
-    implementation "com.squareup.picasso:picasso:$picasso_version"
-    implementation "de.hdodenhof:circleimageview:$circleimageview_version"
+    implementation(platform "com.squareup.okhttp3:okhttp-bom:$okhttp_version")
+    implementation "com.squareup.okhttp3:okhttp"
+    implementation"com.squareup.okhttp3:logging-interceptor"
+    testImplementation "com.squareup.okhttp3:mockwebserver"
 
+    implementation 'androidx.compose.ui:ui-test-junit4-android:1.7.5'
     testImplementation "junit:junit:$junit_version"
-    testImplementation "org.mockito:mockito-core:$mockito_version"
-    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:$mockito_kotlin_version"
     testImplementation "androidx.arch.core:core-testing:$core_testing_version"
-    implementation "io.insert-koin:koin-test:$koin_version"
 
-    androidTestImplementation "androidx.test:runner:$test_runner_version"
-    androidTestImplementation "androidx.test.espresso:espresso-core:$espresso_version"
-    androidTestImplementation "androidx.test:core-ktx:$core_ktx_test_version"
+    implementation(platform("androidx.compose:compose-bom:$compose_version"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:$compose_version"))
+    implementation("androidx.compose.material3:material3")
+    implementation("androidx.compose.ui:ui-tooling-preview")
+    debugImplementation("androidx.compose.ui:ui-tooling")
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4")
+    debugImplementation("androidx.compose.ui:ui-test-manifest")
+    implementation("androidx.activity:activity-compose:$activity_compose_version")
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:$lifecycle_viewmodel_compose_version")
+    implementation("androidx.compose.runtime:runtime-livedata")
+    implementation("androidx.compose.runtime:runtime-rxjava2")
+
+    implementation("io.coil-kt.coil3:coil-compose:$coil_version")
+    implementation("io.coil-kt.coil3:coil-network-okhttp:$coil_version")
+
+    implementation("androidx.room:room-runtime:$room_version")
+    kapt("androidx.room:room-compiler:$room_version")
+    implementation("androidx.room:room-ktx:$room_version")
 }
